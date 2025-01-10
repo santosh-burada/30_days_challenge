@@ -21,7 +21,8 @@ In this challenge, we will create a serverless data lake on AWS using Amazon S3,
 - NBA data is fetched from an external API and temporarily stored in memory.
 - The fetched data is uploaded to the S3 bucket as a JSON file under `raw-data/nba_player_data.json`.
 
-### 4. **Glue Table Creation (`create_glue_table`)**
+### 4. **Glue Table Creation (`create_glue_table`) (optional)**
+- if you are createing a Glue Crawler a table is automatically created if the crawler execution is successful. For creating Glue Crawler see next section.
 - A Glue table named `nba_player_data` is created within the `glue_nba_data_lake` database.
 - The table defines the schema of the JSON data stored in S3 (e.g., columns like `player_id`, `team`, `points_per_game`).
 - AWS Glue connects the schema to the raw data in S3, making it queryable by Athena.
@@ -30,6 +31,20 @@ In this challenge, we will create a serverless data lake on AWS using Amazon S3,
 - Athena is configured to output query results to a specific S3 location (`s3://sports-data-lake/athena-results/`).
 - Athena enables SQL-like querying of the data defined in the Glue table.
 - This allows for analysis of the NBA data without extensive preprocessing.
+
+---
+
+## Glue Crawler Setup and Execution
+
+### **Creating the Glue Crawler (`create_glue_crawler`)**
+- This method creates a Glue crawler named `nba_player_data_crawler` to catalog the NBA data stored in the S3 bucket.
+- It checks for existing crawlers and creates one only if it doesn’t exist.
+- The crawler is configured to use the `glue_service_role` and catalog data under the `glue_nba_data_lake` database with the table prefix `nba_`.
+- Logs the crawler details using `get_crawler` after creation.
+
+### **Running the Glue Crawler (`run_glue_crawler`)**
+- This method starts the `nba_player_data_crawler` to scan the S3 data and update the Glue catalog.
+- Ensures that the raw data in S3 is properly cataloged and queryable through Athena.
 
 ---
 
@@ -46,7 +61,7 @@ In this challenge, we will create a serverless data lake on AWS using Amazon S3,
 - Glue also supports ETL (Extract, Transform, Load) operations for cleaning and transforming data.
 - In this script, Glue links the `nba_player_data` table to the raw JSON data in S3.
 
-### **Amazon Athena (Data Querying and Analysis)**
+### **Amazon Athena (Data Querying and Analysis) [optional]**
 - Athena is a serverless query engine that allows SQL-like queries on data stored in S3.
 - It uses the Glue catalog to understand the structure of the data (e.g., columns and data types).
 - Athena executes SQL queries directly on the data in S3, and query results are stored back in S3 for later use.
@@ -60,7 +75,7 @@ In this challenge, we will create a serverless data lake on AWS using Amazon S3,
    - Data is fetched from an external API and stored in S3.
 
 2. **Metadata Cataloging:**
-   - Glue catalogs the S3 data by creating a database and table that define its schema.
+   - Glue catalogs the S3 data by creating a database and a table that define its schema.
 
 3. **Data Querying:**
    - Athena uses the Glue metadata to run SQL queries on the S3 data.
@@ -79,6 +94,12 @@ In this challenge, we will create a serverless data lake on AWS using Amazon S3,
 
 3. **Seamless Integration:**
    - S3 stores the data, Glue provides schema and metadata, and Athena allows SQL queries—all working together seamlessly.
+
+---
+
+This approach creates a robust and efficient data lake for analyzing NBA data using AWS services.
+
+
 
 ---
 
