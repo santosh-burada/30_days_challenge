@@ -104,12 +104,5 @@ This project provided valuable hands-on experience in:
 - **Expand tracked cities**: Support for a larger list of cities.
 - **Automated testing suite**: Implement unit and integration tests.
 
----
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
----
-
 ## Author
 Santosh Burada
